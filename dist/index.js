@@ -38,10 +38,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(242));
 const wait_1 = __webpack_require__(31);
-function run() {
+function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const ms = core.getInput('milliseconds');
+            const ms = `1000`; // core.getInput('milliseconds');
             core.debug(`Waiting ${ms} milliseconds ...`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
             core.debug(new Date().toTimeString());
             yield wait_1.wait(parseInt(ms, 10));
@@ -53,7 +53,7 @@ function run() {
         }
     });
 }
-run();
+main();
 
 
 /***/ }),
@@ -75,7 +75,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.wait = void 0;
 function wait(milliseconds) {
     return __awaiter(this, void 0, void 0, function* () {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             if (isNaN(milliseconds)) {
                 throw new Error('milliseconds not a number');
             }
