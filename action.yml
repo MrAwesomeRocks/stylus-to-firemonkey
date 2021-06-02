@@ -1,11 +1,14 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Stylus to Firemonkey'
+description: 'A Github action for converting Stylus scripts into ones that can be used by Firemonkey.'
+author: 'Nino Maruszewski'
 inputs:
-  milliseconds: # change this
+  styles:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'A list or a file containing Stylus style urls to process.'
+  debug-only:
+    required: false
+    description: Run the workflow as a dry-run
+    default: 'false'
 runs:
   using: 'node12'
   main: 'dist/index.js'
