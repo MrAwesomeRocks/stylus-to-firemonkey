@@ -10,15 +10,37 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-          npm install
-      - run: |
-          npm run all
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pnpm-modules
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.node-version }}-
+      - name: Download pnpm and dependencies
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.0.2
+          run_install: true
+      - name: Run build and test
+        run: |
+          pnpm run all
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Test action
+        uses: ./
         with:
-          milliseconds: 1000
+          styles: ".github/styles.txt"
+          debug-only: true
+
